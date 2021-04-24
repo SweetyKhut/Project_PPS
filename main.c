@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define USERNAME "admin"
-#define PASSWORD "admin123"
+#define USERNAME "ppsproject"
+#define PASSWORD "123456"
 #define MAX 20
 
 typedef struct items
 {
     char product_code[MAX];
     char product_name[MAX];
-    int rate;
+    int price;
     int quantity;
     float weight;
     char description[30];
@@ -19,7 +19,7 @@ typedef struct items
 ITEM item;
 
 // function to check if the given product code is available
-int isCodeAvailable(char code[])
+int Availability(char code[])
 {
     FILE *file;
     file = fopen("Record.txt", "r");
@@ -73,7 +73,7 @@ int get_int(int input)
     return input;
 }
 
-int check_rate()
+int check_price()
 
 {
     int input;
@@ -85,9 +85,9 @@ int check_rate()
         }
         // system("clear");
         printf("\033[1;31m");
-        printf("\n\v\t\t\t\t\t\tRate be positive Integer.\n");
+        printf("\n\v\t\t\t\t\t\tPrice be positive Integer.\n");
         printf("\033[0m");
-        printf("\t\t\t\t\tEnter rate of the product in positive integer: ");
+        printf("\t\t\t\t\tEnter price of the product in positive integer: ");
     }
 
     return input;
@@ -128,9 +128,9 @@ void addProduct()
     // printf("%s", code);
     printf("\t\t\t\t\tEnter Product Name: ");
     scanf("%s", item.product_name);
-    printf("\n\t\t\t\t\tEnter Product Rate: ");
-    a = check_rate();
-    item.rate = a;
+    printf("\n\t\t\t\t\tEnter Product Price: ");
+    a = check_price();
+    item.price = a;
     printf("\n\t\t\t\t\tEnter Quantity: ");
     scanf("%d", &item.quantity);
     printf("\n\t\t\t\t\tEnter product Weight(in gram): ");
@@ -152,7 +152,7 @@ void display()
     int count = 0;
     file = fopen("Record.txt", "rb");
     printf("\t\t\t------------------------------------------------------------------------------------------------------\n");
-    printf("\t\t\tCODE\t||\tNAME\t||\tRATE\t||\tQUANTITY\t||\tWEIGHT\t||\tDESCRIPTION\n");
+    printf("\t\t\tCODE\t||\tNAME\t||\tPrice\t||\tQUANTITY\t||\tWEIGHT\t||\tDESCRIPTION\n");
     printf("\t\t\t------------------------------------------------------------------------------------------------------\n");
     if (file == NULL)
     {
@@ -161,7 +161,7 @@ void display()
     }
     while (fread(&item, sizeof(item), 1, file))
     {
-        printf("\t\t\t%s\t||\t%s\t||\t%d\t||\t %d\t\t||\t%.2f\t||\t%s \n", item.product_code, item.product_name, item.rate, item.quantity, item.weight, item.description);
+        printf("\t\t\t%s\t||\t%s\t||\t%d\t||\t %d\t\t||\t%.2f\t||\t%s \n", item.product_code, item.product_name, item.price, item.quantity, item.weight, item.description);
         count++;
     }
     printf("\t\t\t------------------------------------------------------------------------------------------------------\n");
@@ -228,7 +228,7 @@ void search()
             {
                 printf("\n\t\t\t\t\t\tProduct Code:        %s", item.product_code);
                 printf("\n\t\t\t\t\t\tName of Product:     %s", item.product_name);
-                printf("\n\t\t\t\t\t\tRate of Product(RS): %d", item.rate);
+                printf("\n\t\t\t\t\t\tPrice of Product(RS): %d", item.price);
                 printf("\n\t\t\t\t\t\tProduct Weight:      %.2f", item.weight);
                 printf("\n\t\t\t\t\t\tProduct Description: %s\n", item.description);
             }
@@ -239,24 +239,24 @@ void search()
 
 // Delete function start
 
-void deleteRecord()
+void removeRecord()
 {
-    // printf("\v\v\t\t\t\t\t\t\tDelete Product\n");
-    // printf("\t\t\t\t\t\t************************\n");
+    printf("\v\v\t\t\t\t\t\t\tRemove Product\n");
+    printf("\t\t\t\t\t\t************************\n");
     FILE *file1, *file2;
     char code[MAX], product[MAX];
     int available;
     file1 = fopen("Record.txt", "rb");
-    // if (file1 == NULL)
-    // {
-    //     printf("\t\t\t\tNo Product is inserted.");
-    //     options();
-    // }
+     if (file1 == NULL)
+     {
+        printf("\t\t\t\tProduct is inserted.");
+         options();
+     }
     display();
-    printf("\n\t\t\t\t\t\tEnter the Product code to delete: ");
+    printf("\n\t\t\t\t\t\tEnter the Product code to remove the product: ");
     scanf("%s", code);
     system("clear");
-    available = isCodeAvailable(code);
+    available = Availability(code);
     if (available == 0)
     {
         system("clear");
@@ -284,14 +284,14 @@ void deleteRecord()
         {
             fwrite(&item, sizeof(item), 1, file1);
         }
-        printf("\n\v\t\t\t\t\t\tProduct deleted sucessfully!!\n\n");
+        printf("\n\v\t\t\t\t\t\tProduct removed sucessfully!!\n\n");
         fclose(file1);
         fclose(file2);
     }
 
-} // end of delete file
+} 
 
-// Function to delete the Products.
+
 void updateProduct()
 {
     printf("\v\v\t\t\t\t\t\t\tUpdate Product\n");
@@ -333,8 +333,8 @@ void updateProduct()
                 // fflush(stdin);
                 printf("enter Product Name: ");
                 scanf("%s", item.product_name);
-                printf("Enter Product Rate: ");
-                scanf("%d", &item.rate);
+                printf("Enter Product Price: ");
+                scanf("%d", &item.price);
                 printf("Enter Quantity: ");
                 scanf("%d", &item.quantity);
                 printf("Enter weight: ");
@@ -366,9 +366,9 @@ void login()
     // loginAgain:
     //system("clear");
 
-    printf("\v\v\t\t\tEnter username: ");
+    printf("\v\v\t\t\tEnter Employee Id: ");
     scanf("%s", username);
-    printf("\t\t\tEnter password: ");
+    printf("\t\t\tEnter Password: ");
     scanf("%s", password);
     while (1)
     {
@@ -378,15 +378,15 @@ void login()
             printf("\033[1;32m");
             printf("\t\t\t\t\tLogin successfully!!");
             printf("\033[0m");
-            //printf("\v\v\t\t\t--Welcome to the Hritik Departmental Store--\n");
+            //printf("\v\v\t\t\t--Welcome to the Departmental Store--\n");
             options();
         }
         else
         {
             system("clear");
             printf("\033[1;31m");
-            printf("\n\t\t\tsorry you enter the worng information.\n");
-            printf("\n\t\t\tPlease try again.\n");
+            printf("\n\t\t\tCredentials don't match.\n");
+            printf("\n\t\t\tTry again with correct details.\n");
             printf("\033[0m");
             // goto loginAgain;
             login();
@@ -478,11 +478,11 @@ void saleProduct()
         {
             if ((strcmp(item.product_code, x) == 0))
             {
-                total = item.rate * q;
+                total = item.price * q;
                 printf("\n\t\t\t%d ", i);
                 printf("\t\t\t%s ", item.product_name);
                 printf("\t\t\t%d ", q);
-                printf("\t\t\t%d ", item.rate);
+                printf("\t\t\t%d ", item.price);
                 printf("\t\t\t%d ", total);
                 gtotal = gtotal + total;
                 size = sizeof(item);
@@ -509,12 +509,12 @@ void saleProduct()
 //     int i;
 //     for (i = 1; i <= 10; i++)
 //         printf("-");
-//     printf(" HRITIK DEPARTMENTAL STORE");
+//     printf(" DEPARTMENTAL STORE");
 //     for (i = 1; i <= 10; i++)
 //         printf("-");
 //     printf("\n\n");
 //     printf("CUSTOMER'S BILL\n");
-//     printf("SN.   Item Name     Quantity     Rate          Total\n");
+//     printf("SN.   Item Name     Quantity     Price          Total\n");
 // }
 
 void options()
@@ -525,7 +525,7 @@ void options()
     while (1)
     {
         printf("\n\t\t\t\t\t\t\t\t\t1. Insert\n\t\t\t\t\t\t\t\t\t2. Display");
-        printf("\n\t\t\t\t\t\t\t\t\t3. Search\n\t\t\t\t\t\t\t\t\t4. Delete\n\t\t\t\t\t\t\t\t\t5. Update");
+        printf("\n\t\t\t\t\t\t\t\t\t3. Search\n\t\t\t\t\t\t\t\t\t4. Remove\n\t\t\t\t\t\t\t\t\t5. Update");
         printf("\n\t\t\t\t\t\t\t\t\t6. close\n\t\t\t\t\t\t\t\t\t7. Sale product\n\n");
         printf("\t\t\t\t\t\t\t\t\tEnter your choice: ");
         choice = get_int(num);
@@ -547,7 +547,7 @@ void options()
             break;
         case 4:
             system("clear");
-            deleteRecord();
+            removeRecord();
             break;
         case 5:
             system("clear");
